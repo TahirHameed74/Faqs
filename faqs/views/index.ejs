@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAQs</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://bootswatch.com/3/superhero/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+  <link rel="stylesheet" href="/stylesheets/style.css">
+
+  <style>
+    .slick-next,
+    .slick-prev {
+      display: none !important;
+    }
+
+    .login-btn {
+      margin-right: 40px;
+      margin-top: 10px;
+    }
+  </style>
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.3/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+
+  <nav class="navbar navbar-default" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <img style="margin-left: 20px; max-height: 60px; max-width: 200px;" src="/images/logo.png" alt="">
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+      <ul class="nav navbar-nav navbar-right">
+
+        <li class="visible-xs visible-sm"><a data-toggle="modal" href='#contactModal' href="#">Submit a Request</a></li>
+        <li class="visible-xs visible-sm"><a href="#">Login</a></li>
+
+        <li class="visible-lg visible-md">
+          <button class="btn btn-default" data-toggle="modal" href='#contactModal' style="margin-top: 10px;">Submit a
+            Request</button> &nbsp;
+          <button class="btn btn-default login-btn">Login</button>
+        </li>
+
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </nav>
+
+
+  <br><br>
+  <h2 class="text-center">Hello, how can we help you?</h2>
+  <br>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+
+        <div class="input-group" style="background: white;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);">
+          <input type="text" class="form-control" id="searchInput" placeholder="Search">
+          <span class="input-group-btn">
+            &nbsp;
+            <button type="button" class="btn btn-link" onclick="search()">SEARCH</button>
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <p class="text-center" style="font-weight: bold; margin-top: 30px;">Or choose a category to quickly find the help you
+    need</p>
+
+  <div class="container">
+    <div class="slick">
+      <% for (category of categories) { %>
+      <div class="well2" style="cursor: pointer; border-radius: 30px;" onclick="showSection('<%=category.id%>')">
+        <p></p>
+        <p class="text-center"> <i style="font-size: 3.5rem; color: #4e5d6c;" class="<%= category.icon %>"></i></p>
+        <p class="text-center" style="line-height: 1.5em; color: #4e5d6c;"><b style="font-size: 2rem;"><%= category.title %></b></p>
+      </div>
+      <% } %>
+    </div>
+  </div>
+  <br>
+  <br>
+  <div class="container">
+    <% for (category of categories) { %>
+    <div id="categoryListing<%=category.id%>">
+      <h4 class="text-center"><%=category.title%></h4>
+      <% if (faqs[category.id].length == 0) { %>
+      <p class="text-center">No FAQs in this category.</p>
+      <% } %>
+      <% for (faq of faqs[category.id]) { %>
+      <div class="panel-group" id="accordion">
+        <div class="panel">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=category.id%>-<%=faq.id%>">
+                <b> <i class="fas fa-dot-circle"></i> <%= faq.question %></b>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse<%=category.id%>-<%=faq.id%>" class="panel-collapse collapse in">
+            <div class="panel-body" style="word-break:break-all">
+              <%- faq.answer %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>
+    <% } %>
+
+  </div>
+
+
+
+  <div class="modal fade" id="searchResults">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Search Results</h4>
+        </div>
+        <div class="modal-body" id='modelBody'>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="modal fade" id="contactModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Submit A Request</h4>
+        </div>
+
+        <form action="/mail" method="POST" role="form" enctype="multipart/form-data">
+          <div class="modal-body">
+
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" name="name" id="" placeholder="Name" required='true'>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" name="email" id="" placeholder="Email" required='true'>
+            </div>
+
+            <div class="form-group">
+              <label for="request">Request</label>
+              <textarea name="request" style="display: block; width: 100%;" id="request" required='true'></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="file">File (if any)</label>
+              <input type="file" name="file" id="file"></input>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Submit Request</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.4.5/fuse.min.js"></script>
+  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+  <script>
+    <% for (category of categories) { %>
+      $('#categoryListing<%=category.id%>').hide();
+    <% } %>
+
+      $('#categoryListing<%=categories[0].id%>').show();
+
+
+
+    $('.slick').slick({
+      infinite: true,
+      slidesToShow: 3,
+      slidesToScroll: 3,
+      responsive: [
+        {
+          breakpoint: 769,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        }
+      ]
+    });
+
+
+
+    function showSection(id) {
+      <% for (category of categories) { %>
+        $('#categoryListing<%=category.id%>').hide();
+      <% } %>
+
+        $('#categoryListing' + id).show();
+    }
+
+    allFaqs = [];
+    var fuse = undefined;
+
+    $.get('/faqs', function (data) {
+      allFaqs = data;
+      fuse = new Fuse(allFaqs, options);
+    });
+
+    var options = {
+      shouldSort: true,
+      threshold: 0.6,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: [
+        "question"
+      ]
+    };
+
+    function search() {
+      ques = [];
+      term = $('#searchInput').val();
+      if (term.trim().length == 0) {
+        return;
+      }
+      faqsSearched = fuse.search(term);
+      faqs = [];
+      for (faq of faqsSearched) {
+        t = `
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#modalcollapse${faq.id}">
+                                Q. ${faq.question}
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="modalcollapse${faq.id}" class="panel-collapse collapse in">
+                        <div class="panel-body" style="word-break:break-all">
+                            ${faq.answer}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        faqs.push(t);
+      }
+
+      $('#searchResults').modal('show');
+      $('#modelBody').html(faqs.join(''));
+    }
+
+  </script>
+</body>
+
+</html>

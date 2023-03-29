@@ -1,0 +1,45 @@
+body {
+  background: #4B4F52;
+}
+
+.navbar-inverse {
+  background-color: #3F4044 !important;
+}
+
+.navbar-inverse .navbar-nav>li>a, .navbar-inverse .navbar-brand {
+  color: #f9f9f9
+}
+
+.text-white {
+  color: #FFF;
+}
+
+.panel-body {
+  background: #FFF;
+}
+
+.panel-body p {
+  color: #333;
+}
+
+.input-group-text {
+  position: absolute;
+  top: 17px;
+  font-size: 24px;
+}
+
+.well2 {
+  margin: 10px;
+  min-height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #FFF;
+  border-radius: 5px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.ql-toolbar, .ql-editor {
+  background: #FFF;
+}

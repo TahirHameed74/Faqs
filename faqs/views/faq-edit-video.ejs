@@ -1,0 +1,44 @@
+<%- include('./partials/admin-header.ejs') %>
+
+<body>
+  <%- include('./partials/admin-nav.ejs') %>
+
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2 well bs-component"
+        style="border-radius: 5px; box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);">
+
+        <form action="/admin/faq/<%=faq.id%>/edit-video" method="POST" id="newfaq" role="form" enctype="multipart/form-data">
+          <legend>Edit FAQs</legend>
+
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select name="category" id="category" class="form-control">
+              <% for (var i = 0; i < categories.length; i++) { %>
+                <option <% if (faq.categoryid === categories[i].id) { %> selected='true' <% } %> value="<%= categories[i].id %>"><%= categories[i].title %> </option>
+              <% } %>
+            </select>
+
+          </div>
+
+          <div class="form-group">
+            <label for="question">Question</label>
+            <input type="text" class="form-control" id="question" value="<%= faq.question %>" name="question" placeholder="Question">
+          </div>
+          <div class="form-group">
+            <label for="editor">Video</label>
+            <input type="file" id='video' name="video"  accept=".mp4,.webm,.ogg" required>
+          </div>
+          <br>
+          <p class="text-center"> <button type="submit" class="btn btn-primary">Edit FAQ</button></p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <%- include('./partials/admin-footer.ejs') %>
+</body>
+
+</html>

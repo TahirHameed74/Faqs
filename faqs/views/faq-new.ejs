@@ -1,0 +1,96 @@
+<%- include('./partials/admin-header.ejs') %>
+
+<body>
+  <%- include('./partials/admin-nav.ejs') %>
+
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2 well bs-component"
+        style="border-radius: 5px; box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);">
+
+        <form action="/admin/new" method="POST" id="newfaq" role="form">
+          <legend>New FAQs</legend>
+
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select name="category" id="category" class="form-control">
+              <% for (var i = 0; i < categories.length; i++) { %>
+                <option value="<%= categories[i].id %>"><%= categories[i].title %> </option>
+              <% } %>
+            </select>
+
+          </div>
+
+          <div class="form-group">
+            <label for="question">Question</label>
+            <input type="text" class="form-control" id="question" name="question" placeholder="Question">
+          </div>
+          <div class="form-group">
+            <label for="editor">Answer - <a href="/admin/new-video">Add Video</a></label>
+            <div id="editor">
+            </div>
+          </div>
+          <br>
+          <p class="text-center"> <button type="submit" class="btn btn-primary">Add FAQ</button></p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <%- include('./partials/admin-footer.ejs') %>
+
+  <script>
+    var quill = new Quill('#editor', {
+      placeholder: 'Answer',
+      theme: 'snow'
+    });
+
+
+
+
+    function getFormData($form) {
+      var unindexed_array = $form.serializeArray();
+      var indexed_array = {};
+
+      $.map(unindexed_array, function (n, i) {
+        indexed_array[n['name']] = n['value'];
+      });
+
+      return indexed_array;
+    }
+
+
+    $("#newfaq").submit(function (e) {
+      e.preventDefault(); // avoid to execute the actual submit of the form.
+      var form = $(this);
+      var data = getFormData(form);
+
+      data.answer = quill.root.innerHTML;
+
+      if (!data.question || data.question.length == 0) {
+        window.alert('Question can not be empty');
+        return;
+      }
+
+      if (quill.getText().length == 0) {
+        window.alert('Answer can not be empty');
+        return;
+      }
+
+
+      $.ajax({
+        type: "POST",
+        url: '/admin/new',
+        data: data,
+        success: function (data) {
+          window.location = '/admin/';
+        }
+      });
+    });
+
+  </script>
+</body>
+
+</html>

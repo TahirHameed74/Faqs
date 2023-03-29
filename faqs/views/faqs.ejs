@@ -1,0 +1,55 @@
+<%- include('./partials/admin-header.ejs') %>
+
+<body>
+
+    <%- include('./partials/admin-nav.ejs') %>
+
+
+    <h2 class="text-center text-white" style="margin-bottom: 30px;">FAQs</h2>
+    <p class="text-center" style="margin-bottom: 30px;">
+        <a href="/admin/new"><button type="button" class="btn btn-default">Add New FAQ</button></a>
+        <a href="/admin/new-category"><button type="button" class="btn btn-default">Add New Category</button></a>
+    </p>
+
+
+
+    <div class="container well bs-component" style="border-radius: 5px; box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);">
+        <% for (category of categories) { %>
+        <br><br>
+        <h4 class="text-center"> <i class="<%= category.icon %>"></i> <%= category.title %>
+        &nbsp;&nbsp; <a href="/admin/category/<%=category.id%>/edit"><i class="fas fa-edit"></i></a>
+        &nbsp;&nbsp; <a href="/admin/category/<%=category.id%>/delete"><i class="fas fa-trash"></i></a></h4>
+        <% if (faqs[category.id].length == 0) { %>
+        <p class="text-center">No FAQs in this category.</p>
+        <% } %>
+        <% for (faq of faqs[category.id]) { %>
+        <div class="panel-group" id="accordion">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=category.id%>-<%=faq.id%>">
+                            Q. <%= faq.question %>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse<%=category.id%>-<%=faq.id%>" class="panel-collapse collapse out">
+                    <div class="panel-body" style="word-break:break-all">
+                        <%- faq.answer %>
+                        <br>
+                        <a href="/admin/faq/<%=faq.id%>/edit">Edit</a> &nbsp;&nbsp;
+                        <a href="/admin/faq/<%=faq.id%>/delete">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+
+        <% } %>
+
+    </div>
+    <%- include('./partials/admin-footer.ejs') %>
+
+</body>
+
+</html>
